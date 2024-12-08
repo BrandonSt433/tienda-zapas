@@ -1,0 +1,25 @@
+{% extends 'mastertemplate.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>Editar Producto: {{ producto.nombre }}</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }}
+      </div>
+      
+      <h3>Tallas</h3>
+      {{ formset.management_form }}
+      
+      {% for form_talla in formset %}
+        <div class="form-group">
+          {{ form_talla.as_p }}
+        </div>
+      {% endfor %}
+      
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'mastertemplate.html' %}
+
+{% block title %}
+Registrarse
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card py-4">
+                <form method="post" action="{% url 'registro' %}">
+                    <div class="card-body">
+                        {% if messages %}
+                            <div class="alert-container">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% csrf_token %}
+                        <h5 class="card-title text-center">Crear Cuenta</h5>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Usuario</label>
+                            <input type="text" name="username" class="form-control" id="username"
+                                   placeholder="Ingrese su nombre de usuario" required>
+                        <div class="mb-3">
+                            <label for="password1" class="form-label">Contraseña</label>
+                            <input type="password" name="password1" class="form-control" id="password1"
+                                   placeholder="Ingrese su contraseña" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password2" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" name="password2" class="form-control" id="password2"
+                                   placeholder="Repita su contraseña" required>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-light w-100">Registrarse</button>
+                        </div>
+                        <p class="text-center mt-3">
+                            ¿Ya tienes una cuenta? <a href="{% url 'iniciar_sesion' %}" style="color: #dfdfdf;">Inicia sesión aquí</a>.
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if alert %}
+<script>
+    Swal.fire({
+        icon: '{{ alert.type }}',
+        title: '{{ alert.title }}',
+        text: '{{ alert.text }}',
+    });
+</script>
+{% endif %}
+{% endblock %}

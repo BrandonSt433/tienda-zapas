@@ -1,0 +1,68 @@
+{% extends 'mastertemplate.html' %}
+
+{% block title %}
+Crear Producto
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">{% if form.instance.pk %}Editar Producto{% else %}Crear Producto{% endif %}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card bg-dark text-white mb-3">
+            <div class="card-header">Detalles del Producto</div>
+            <div class="card-body">
+                {{ form.as_p }}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                {% for field in form %}
+                {% if field.errors %}
+                <div class="alert alert-danger">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="card bg-dark text-white mb-3">
+            <div class="card-header">Tallas y Cantidades</div>
+            <div class="card-body">
+                {{ formset.management_form }}
+                <table class="table table-dark table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Talla</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form in formset %}
+                        <tr>
+                            <td>{{ form.talla }}</td>
+                            <td>{{ form.cantidad }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% for form in formset %}
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">Guardar Producto</button>
+            <a href="{% url 'listar_productos' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

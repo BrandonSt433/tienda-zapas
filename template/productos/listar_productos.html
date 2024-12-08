@@ -1,0 +1,38 @@
+{% extends 'mastertemplate.html' %}
+
+{% block content %}
+<h1>Lista de Productos</h1>
+<table class="table table-striped text-white">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>imagen</th>
+            <th>Proveedor</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>${{ producto.precio }}</td>
+            <td>
+                {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="width: 100px; height: auto;">
+                {% else %}
+                Sin imagen
+                {% endif %}
+            </td>    
+            <td>{{ producto.cod_proveedor.nombre_proveedor }}</td>
+            <td>
+                <a href="{% url 'editar_producto' producto.pk %}" class="btn btn-primary">Editar</a>
+                <a href="{% url 'eliminar_producto' producto.pk %}" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

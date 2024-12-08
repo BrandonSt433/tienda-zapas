@@ -1,0 +1,40 @@
+{% extends 'mastertemplate.html' %}
+
+{% block title %}
+{{ producto.nombre }} - Detalle
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ producto.imagen.url }}" class="img-fluid" alt="{{ producto.nombre }}">
+        </div>
+        <div class="col-md-6">
+            <h2>{{ producto.nombre }}</h2>
+            <p>{{ producto.descripcion }}</p>
+            <h3>${{ producto.precio }}</h3>
+            <form method="post" action="{% url 'agregar_al_carrito' producto.cod_producto %}">
+                {% csrf_token %}
+                <label for="talla">Seleccione una talla:</label>
+                <select id="talla" name="talla" class="form-control" required>
+                    {% for talla in producto.tallas.all %}
+                        {% if talla.cantidad > 0 %}
+                            <option value="{{ talla.talla }}">{{ talla.talla }} (Disponible: {{ talla.cantidad }})</option>
+                        {% else %}
+                            <option value="{{ talla.talla }}" disabled>{{ talla.talla }} (Agotada)</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary mt-3">Agregar al carrito</button>
+            </form>
+            {% if user.is_staff %}
+            <a href="{% url 'agregar_talla' producto.cod_producto %}" class="btn btn-success mt-3">Agregar Nueva Talla</a>
+            <a href="{% url 'editar_producto' producto.cod_producto %}" class="btn btn-warning mt-3">Editar Producto</a>
+            <a href="{% url 'eliminar_producto' producto.cod_producto %}" class="btn btn-danger mt-3">eliminar Producto</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
